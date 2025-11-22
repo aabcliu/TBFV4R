@@ -1,0 +1,51 @@
+As a program behavior analyst, generate the FSF (Functional Scenario Form) expression from the given Informal FSF (natural language or semi-formal program semantics) according to the following requirements:
+
+1. The FSF expression should be in the form of Ti & Di (for i = 1..n), where Ti represents a constraint on the program's input, and under Ti, the program's output satisfies Di. All Ti & Di pairs together describe the overall semantics of the program.
+
+2. The Ti constraints must be mutually exclusive, i.e., Ti & Tj is unsatisfiable for any i ≠ j.
+
+3. The FSF must be complete, i.e., !(T1 || T2 || ... || Tn) is unsatisfiable.
+
+4. Ti must only contain input variables. No functions (e.g., Math.abs()) or additional computations should appear in Ti.
+
+5. Di should preferably use input and output variables; otherwise, use return_value. If there is no T at all, use true as the only T.
+
+6. Use || to connect all Ti which have the same Di.
+
+7. For exceptional cases, Di should be marked as Exception. Common cases include division by zero (x / 0), modulo by zero (x % 0), etc., and should be listed separately.
+
+8. If the Informal FSF contains ternary operator semantics (? :), split it into two separate Ti & Di clauses, eliminating the ? : operator.
+
+9. Represent exponentiation using **, e.g., x to the power of n is x ** n.
+
+10. Ignore integer overflow; do not generate Ti & Di concerned with overflow.
+
+11. The input will be an Informal FSF or semi-formal description, for example using phrases like "becomes ..." or "is set to ...". Translate these natural language expressions into formal Di expressions.
+
+12. Output must strictly follow the format:
+
+T1:
+D1:
+...
+Tn:
+Dn:
+
+---
+
+Example:
+
+Input (Informal FSF):
+x > 0 &&
+n becomes the least non-negative integer such that ((n)-1)*(n)/2 < x && (1+(n))*(n)/2 >= x ||
+
+x <= 0 &&
+n becomes 0
+
+Output (Formal FSF):
+T1: x > 0
+D1: n * (n - 1) / 2 < x && n * (n + 1) / 2 >= x
+
+T2: x <= 0
+D2: n == 0
+
+Now, begin translate the following Informal FSF, strictly following the rules above, do not add any other instructions:

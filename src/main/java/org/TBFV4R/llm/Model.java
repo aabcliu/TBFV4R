@@ -18,6 +18,7 @@ import java.util.Map;
 public class Model {
     private final ModelConfig config;
     private final String promptCode2IFSF;
+    private final String promptIFSF2FSF;
     ObjectMapper mapper = new ObjectMapper();
     public Model(){
         mapper = new ObjectMapper();
@@ -31,6 +32,11 @@ public class Model {
             this.promptCode2IFSF= FileUtil.readLinesAsString("resources/prompts/Code2IFSF.txt","\n");
         } catch (IOException e) {
             throw new Error("resources/prompts/Code2IFSF.txt not found!");
+        }
+        try {
+            this.promptIFSF2FSF= FileUtil.readLinesAsString("resources/prompts/IFSF2FSF.txt","\n");
+        } catch (IOException e) {
+            throw new Error("resources/prompts/IFSF2FSF.txt not found!");
         }
     }
     public String predict(String input){
@@ -104,6 +110,12 @@ public class Model {
         String text = (this.predict(promptCode2IFSF+"\n"+code));
         return text;
     }
+
+    public String IFSF2FSF(String IFSF) {
+        String text = (this.predict(promptIFSF2FSF+"\n"+IFSF));
+        return text;
+    }
+
     public String file2IFSF(String filename) {
         try {
             String text = (this.predict(promptCode2IFSF+"\n"+FileUtil.readLinesAsString(filename,"\n")));
