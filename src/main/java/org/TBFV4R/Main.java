@@ -40,7 +40,7 @@ public class Main {
         }
         System.out.print("Enter index:");
         Scanner s = new Scanner(System.in);
-        int line = s.nextInt();
+        int line = Integer.parseInt(s.nextLine());
         line-=1;
         String condition = ifsfTwoPart.get(line)[0];
         String testCase = model.generateTestCase(condition);
@@ -56,7 +56,8 @@ public class Main {
             System.out.println("input ONE integer to replace:");
         }
         do {
-            Optional<Integer> input = InputUtil.processInput(s.nextLine());
+            String x = s.nextLine();
+            Optional<Integer> input = InputUtil.processInput(x);
             if (input.isPresent()) {
                 int newValue = input.get();
                 passTest=false;
@@ -76,11 +77,13 @@ public class Main {
         //code = addPrintStmt(code);
         String ssmp = trans2SSMP(code);
         HashMap<String,String> testCaseMap = new HashMap<>();
+
         String currentT = fsfTwoPart.get(line)[0];
         String currentD = fsfTwoPart.get(line)[1];
         String LHS = testCase.split("=")[0];
         String RHS = testCase.split("=")[1];
-        currentD=currentD.replace(LHS,RHS);
+        testCaseMap.put(LHS,RHS);
+        //currentD=currentD.replace(LHS,RHS);
         try {
             TBFVResult tbfvResult = Runner.validateWithTestCase(ssmp,currentT,currentD,testCaseMap);
             System.out.println(TBFVResultDecoder.parse(tbfvResult));
