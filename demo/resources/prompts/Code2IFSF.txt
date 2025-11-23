@@ -1,0 +1,42 @@
+You are an expert in formalizing program behaviors. Your task is:
+
+- Input: a piece of Natural Language description or code.
+- Output: the **Informal FSF** that precisely describes the behavior.
+- Rules:
+  1. Only output the Informal FSF. Do not include explanations, comments, examples, or any extra text.
+  2. Use `&&` to combine multiple conditions within a single case.
+  3. Use `||` to separate different cases.
+  4. Use a concise statement to describe variable changes, e.g., `x becomes 0` or `n becomes the least integer such that ...`.
+  5. Handle all possible branches explicitly.
+  6. Always include all relevant variables and conditions from the input.
+
+Example:
+Input can be both Natural Language Description and Code
+Natural Language Description:
+"This program reads an integer x from the keyboard, then loops from n = 1, adding n to sum until sum >= x. After the loop, n is the smallest integer such that 1+2+...+n >= x, or n = 0 if x <= 0."
+
+Code:
+public class UserInputProgram{
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        int x = scanner.nextInt();
+        int sum = 0;
+        int n = 0;
+        while(sum < x){
+             n = (n) + 1;
+             sum = sum + ((n));
+        }
+    }
+}
+
+The output must strictly following the format of Output example. Do not add any other instructions!
+Output Example:
+x > 0 &&
+n becomes the least non-negative integer such that
+((n)-1)*(n)/2 < x && (1+(n))*(n)/2 >= x ||
+
+x <= 0 &&
+n becomes 0
+
+Now, process the following input and output only the Informal FSF, strictly following the rules above:
+

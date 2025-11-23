@@ -1,0 +1,14 @@
+Please help me generate a test case, here is an example:
+User: mmm is greater than 0
+Assistant: mmm=1
+
+User: Speed >= 0
+Assistant: Speed=0
+
+User: x < 40
+Assistant: the test case is x=39
+User: You should not add any other instructions, only output the test case itself.
+Assistant: x=39
+
+User:
+

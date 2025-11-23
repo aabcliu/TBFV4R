@@ -458,7 +458,6 @@ def add_value_constraints(logic_expr: str, var_types: dict) -> str:
     return logic_expr
 
 def deal_with_spec_unit_json(spec_unit_json: str):
-    print("开始解析")
     #读取SpecUnit对象
     spec_unit = None
     # print(f"Processing SpecUnit JSON: {spec_unit_json}")
@@ -470,18 +469,13 @@ def deal_with_spec_unit_json(spec_unit_json: str):
     T = spec_unit.T
     D = spec_unit.D
     previous_cts = spec_unit.pre_constrains
-    print("T,D,Program加载成功")
 
     #运行程序,获得输出
     try:
-        print("开始运行java代码")
         output = run_java_code(program, timeout_seconds=20)
-        print("Java代码运行完成")
     except subprocess.TimeoutExpired:
-        print("超时了")
         print_verification_timeout_result()
         return
-    print("java code 运行成功")
 
     execution_output = ""
     if output is None:
@@ -506,7 +500,6 @@ def deal_with_spec_unit_json(spec_unit_json: str):
         execution_output = output.stdout
     if not execution_output:
         print("No output from Java code execution.")
-    print("开始分析路径")
     #分析路径输出，得到本次执行路径相关的Ct
     var_types = parse_md_def(program)
     input_vars = list(var_types.keys())
@@ -773,11 +766,13 @@ def main():
         print("请提供输入要验证的JSON字符串")
         return
     if spec_unit_json is not None:
+        print("start")
         import re
         spec_unit_json = re.sub(r'\s+', '', spec_unit_json)  # 去掉所有空白字符
         spec_unit_json = base64.b64decode(spec_unit_json).decode("utf-8")
         print(spec_unit_json)
-        run_with_timeout(deal_with_spec_unit_json, spec_unit_json, 20, "SpecUnit 验证")
+        deal_with_spec_unit_json(spec_unit_json)
+        #run_with_timeout(deal_with_spec_unit_json, spec_unit_json, 20, "SpecUnit 验证")
 
     if fsf_validation_unit_json is not None:
         run_with_timeout(fsf_validate, fsf_validation_unit_json, 20, "FSF 验证")

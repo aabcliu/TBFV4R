@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 public class TestFSFSplit {
     @Test
@@ -42,6 +43,7 @@ public class TestFSFSplit {
         TBFVResult res =null;
         String suJson = "{\"program\":\"public class Abs_Original {\\n\\n    public static int Abs(int num) {\\n        System.out.println(\\\"Function input int parameter num = \\\" + (num));\\n        if (num < 0) {\\n            System.out.println(\\\"Evaluating if condition: (num < 0) is evaluated as: \\\" + (num < 0));\\n            System.out.println(\\\"return_value = -num , current value of return_value : \\\" + (-num));\\n            return -num;\\n        } else {\\n            System.out.println(\\\"Evaluating if condition: !(num < 0) is evaluated as: \\\" + !(num < 0));\\n            System.out.println(\\\"return_value = num , current value of return_value : \\\" + (num));\\n            return num;\\n        }\\n    }\\n\\n    public static void main(String[] args) {\\n        int num = -1;\\n        int result = Abs(num);\\n        System.out.println(result);\\n    }\\n}\\n\",\"preconditions\":[],\"T\":\"num < 0\",\"D\":\"return_value == -num\",\"pre_constrains\":[]}\n";
         String encoded = Base64.getEncoder().encodeToString(suJson.getBytes(StandardCharsets.UTF_8));
+
         System.out.println(encoded);
         System.out.println(suJson);
         ProcessBuilder pb = new ProcessBuilder(
@@ -50,6 +52,8 @@ public class TestFSFSplit {
                 "--su",
                 encoded
         );
+        Map<String, String> env = pb.environment();
+        env.put("PYTHONIOENCODING", "UTF-8");
 
         Process process = pb.start();
         // 1. 捕获 Python 脚本的标准输出 (stdout)
