@@ -45,7 +45,7 @@ public class ChangeLaneSimple {
     }
 
     public static void main(String[] args) {
-        int current_lane = 2;
+        int current_lane = 1;
         int result = Control_Lane_Change(current_lane);
         System.out.println(result);
     }

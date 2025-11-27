@@ -12,10 +12,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/api")
@@ -73,16 +71,39 @@ public class WebAPIController {
         }
     }
 
+
+
     @PostMapping("/simulateTestCase")
-    public String simulateTestCase(@RequestParam String ssmp,
-                                   @RequestParam String currentT,
-                                   @RequestParam String currentD,
-                                   @RequestBody Map<String, String> testCaseMap) {
+    public String simulateTestCase(@RequestBody Map<String, Object> request) {
         try {
+            System.out.println("Getting parameters...");
+
+            String ssmpBase64 = (String) request.get("ssmp");
+            String currentTBase64 = (String) request.get("currentT");
+            String currentDBase64 = (String) request.get("currentD");
+
+            String ssmp = new String(Base64.getDecoder().decode(ssmpBase64), "UTF-8");
+            String currentT = new String(Base64.getDecoder().decode(currentTBase64), "UTF-8");
+            String currentD = new String(Base64.getDecoder().decode(currentDBase64), "UTF-8");
+
+            Map<String, Object> testCaseObj = (Map<String, Object>) request.get("testCaseMap");
+            Map<String, String> testCaseMap = new HashMap<>();
+            for (Map.Entry<String, Object> entry : testCaseObj.entrySet()) {
+                testCaseMap.put(entry.getKey(), entry.getValue().toString());
+            }
+
+            System.out.println("Validating...");
             TBFVResult tbfvResult = Runner.validateWithTestCase(ssmp, currentT, currentD, testCaseMap);
             return TBFVResultDecoder.parse(tbfvResult);
+
         } catch (Exception e) {
-            return "Error: " + e.getMessage();
+            e.printStackTrace();
+            StringBuilder x = new StringBuilder();
+            for (StackTraceElement stackTraceElement : e.getStackTrace()) {
+                x.append(stackTraceElement.toString()+"\n");
+            }
+            return "Error: " + x;
         }
     }
+
 }

@@ -14,7 +14,7 @@ public class Abs_Original {
     }
 
     public static void main(String[] args) {
-        int num = -1;
+        int num = 0;
         int result = Abs(num);
         System.out.println(result);
     }

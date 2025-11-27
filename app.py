@@ -40,12 +40,17 @@ def generate_test_case(condition: str):
     resp = requests.post(f"{BASE_URL}/generateTestCase", params={"condition": condition})
     return resp.text
 
+import base64
+
 def simulate_test_case(ssmp: str, currentT: str, currentD: str, test_case_map: dict):
+    payload = {
+        "ssmp": base64.b64encode(ssmp.encode("utf-8")).decode("utf-8"),
+        "currentT": base64.b64encode(currentT.encode("utf-8")).decode("utf-8"),
+        "currentD": base64.b64encode(currentD.encode("utf-8")).decode("utf-8"),
+        "testCaseMap": test_case_map
+    }
     headers = {'Content-Type': 'application/json'}
-    resp = requests.post(f"{BASE_URL}/simulateTestCase",
-                         params={"ssmp": ssmp, "currentT": currentT, "currentD": currentD},
-                         data=json.dumps(test_case_map),
-                         headers=headers)
+    resp = requests.post(f"{BASE_URL}/simulateTestCase", json=payload, headers=headers)
     return resp.text
 
 def run_pipeline(code_content):
@@ -87,6 +92,8 @@ with gr.Blocks() as demo:
     
 
     def on_run(code_content):
+        global log_messages
+        log_messages.clear()
         results, extra_log = run_pipeline(code_content)
         fsf_list = [[r["T"], r["D"], r["Proposed Test Case"], r["Simulation Result"]] for r in results]
         return fsf_list, fetch_logs(extra_log)

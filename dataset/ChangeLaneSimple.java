@@ -1,6 +1,6 @@
 public class ChangeLaneSimple {
 
-    public int Control_Lane_Change(int current_lane) {
+    public static int Control_Lane_Change(int current_lane) {
         int target_lane = 2;
         double car_speed = 28.0;
         double safe_distance = 30.0;
