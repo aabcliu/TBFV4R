@@ -769,7 +769,7 @@ def main():
         import re
         spec_unit_json = re.sub(r'\s+', '', spec_unit_json)  # 去掉所有空白字符
         spec_unit_json = base64.b64decode(spec_unit_json).decode("utf-8")
-        print(spec_unit_json)
+        #print(spec_unit_json)
         #deal_with_spec_unit_json(spec_unit_json)
         run_with_timeout(deal_with_spec_unit_json, spec_unit_json, 20, "SpecUnit 验证")
 

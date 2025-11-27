@@ -7,19 +7,28 @@ import org.TBFV4R.llm.Model;
 import org.TBFV4R.tcg.ExecutionEnabler;
 import org.TBFV4R.utils.*;
 import org.TBFV4R.verification.SpecUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.*;
 
 import static org.TBFV4R.path.ExecutionPathPrinter.addPrintStmt;
 import static org.TBFV4R.path.TransWorker.trans2SSMP;
+import static org.TBFV4R.utils.InputUtil.readLineAndLog;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
     public static void main(String[] args) throws IOException {
+        PrintStream logOut = new PrintStream(new LoggingOutputStream(logger, false), true);
+        System.setOut(logOut);
+        PrintStream logErr = new PrintStream(new LoggingOutputStream(logger, true), true);
+        System.setErr(logErr);
+
         Model model = new Model();
         System.out.println("Input path to Code File:");
-        Scanner s = new Scanner(System.in);
-        String file = s.nextLine();//"dataset/Abs_Original.java";
+        String file = readLineAndLog();//"dataset/Abs_Original.java";
         String code = FileUtil.readLinesAsString(file, "\n");
         System.out.println("Original Code & Description");
         System.out.println(code);
@@ -39,20 +48,24 @@ public class Main {
         List<String[]> fsfTwoPart = FSFSplit.parseFSFString(FSF);
         while (true) {
             System.out.println("Select a test condition:");
-            for (int i = 0; i < ifsfTwoPart.size(); i++) {
+            int i;
+            for (i = 0; i < ifsfTwoPart.size(); i++) {
                 System.out.println("\t" + (i + 1) + ")" + ifsfTwoPart.get(i)[0] + "\t(T" + (i + 1) + ")");
             }
-            System.out.print("Enter index:");
+            System.out.println("\t" + (i + 1) + ")" +  "Exit");
+            System.out.println();
 
-            int line = Integer.parseInt(s.nextLine());
+
+            int line = Integer.parseInt(readLineAndLog());
             line -= 1;
+            if(line+1> fsfTwoPart.size()) return;
             String condition = fsfTwoPart.get(line)[0];
             String testCase = model.generateTestCase(condition);
             System.out.println("Proposed test case: " + testCase);
             boolean passTest = false;
             if (EvalUtil.evalBoolean("var " + testCase + ";", condition)) {
                 System.out.println("Test Case:" + testCase + " satisfied condition " + condition);
-                System.out.println("Press Enter or type one of {accept/ok/yes/y/confirm/是/好/确认} to accept.");
+                System.out.println("Press Enter or type one of {accept/ok/yes/y/confirm} to accept.");
                 System.out.println("Or input ONE integer to replace:");
                 passTest = true;
             } else {
@@ -60,7 +73,7 @@ public class Main {
                 System.out.println("input ONE integer to replace:");
             }
             do {
-                String x = s.nextLine();
+                String x = readLineAndLog();
                 Optional<Integer> input = InputUtil.processInput(x);
                 if (input.isPresent()) {
                     int newValue = input.get();

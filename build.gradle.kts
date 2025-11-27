@@ -46,6 +46,8 @@ dependencies {
     implementation("org.mvel:mvel2:2.4.14.Final")
     compileOnly ("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
+    implementation("org.apache.logging.log4j:log4j-api:2.20.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
 }
 
 tasks.test {
