@@ -129,9 +129,11 @@ tasks.test {
 ```
 # Quick Start
 
-In the video link below, we demonstrate how to run a simple example using TBFV4J. Please watch the video to learn about all the features and capabilities supported by TBFV4J.
+In the video link below, we will demonstrate how to use TBFV4R to run a case from the autonomous driving domain to validate the tool's practicality and effectiveness. Please watch the video to learn about all the features supported by TBFV4R.
 
-Follow the TBFV4J guide to write and run your own tests.
+
+Follow the TBFV4R guide to write and run your own tests.
+
 
 ## Demo Video
 
