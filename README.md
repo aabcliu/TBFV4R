@@ -135,5 +135,5 @@ Follow the TBFV4J guide to write and run your own tests.
 
 ## Demo Video
 
-[Click to view the demo video](https://www.youtube.com/watch?v=CwQAXF2Ki8A)
+[Click to view the demo video](x x x x x)
 
