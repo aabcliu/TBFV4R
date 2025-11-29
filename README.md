@@ -8,7 +8,7 @@
 # Introduction
 
 ## 📝 Background
-old version:
+
 The Testing-Based Formal Verification for Real (TBFV-FR) approach integrates testing and formal verification to support both software validation and verification. TBFV-FR enhances the original TBFV framework by incorporating informal functional scenarios from semi-formal specifications to generate test cases reflecting user expectations. These test cases are used to validate the formal specification and verify the program implementation against it. The TBFV4R tool automates key processes such as test case generation, symbolic execution, and path correctness verification. It leverages backward symbolic execution and the Z3 SMT solver to ensure the correctness of program paths. The tool’s practicality and effectiveness are demonstrated through a case study in the autonomous driving domain.
 
 
